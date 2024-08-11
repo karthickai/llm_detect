@@ -1,0 +1,4 @@
+defaults:
+  - model: distilbert.yml
+  - dataset: deepset_prompt_injection.yml
+
