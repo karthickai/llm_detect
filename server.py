@@ -8,7 +8,7 @@ class DistilBertAPI(LitAPI):
         Load the tokenizer and model, and move the model to the specified device.
         """
         self.tokenizer = AutoTokenizer.from_pretrained("distilbert-base-uncased")
-        self.model = AutoModelForSequenceClassification.from_pretrained("src/llmdetect/models/sequence_classification/outputs/2024-08-22/13-37-42/results/checkpoint-7908")
+        self.model = AutoModelForSequenceClassification.from_pretrained("models/distilbert-llm-detect")
         self.model.to(device)
         self.model.eval()
     
