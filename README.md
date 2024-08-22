@@ -11,12 +11,24 @@ Prompt Injection Classification aims to identify and categorize text samples tha
 - `config/`: Configuration files for models and datasets.
 
 
+### Install packages
+
+```bash
+git clone https://github.com/karthickai/llm_detect.git
+cd llm_detect
+pip install -r requiremnts.txt
+```
+
+### Run the model
+Modify inference script for your need!
+```bash
+python inference.py
+```
+
 ### Training the Model
 
-To train the model, navigate to the `src/` directory and run:
+Make sure to edit the configurations in `config/` directory to suit your dataset and model parameters.
 
 ```bash
 python -m llmdetect.models.sequence_classification.train
 ```
-
-Make sure to edit the configurations in `config/` directory to suit your dataset and model parameters.
