@@ -1,6 +1,10 @@
 from datasets import load_dataset
 from transformers import DistilBertTokenizer
 
+# Todo
+# Add method combine multiple prompt dataset
+# create Tranfer learning dataset load 15% of previous dataset in to training
+
 class PromptInjectionDataset:
     def __init__(self, dataset_name, tokenizer_name='distilbert-base-uncased', data_dir="../../../data"):
         self.dataset_name = dataset_name
