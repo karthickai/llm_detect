@@ -1,4 +1,3 @@
 defaults:
   - model: distilbert.yml
-  - dataset: synapsecai_synthetic_prompt_injections.yml
-
+  - dataset: combined_prompt_injection.yml
