@@ -2,4 +2,4 @@ model_name: distilbert-base-uncased
 num_labels: 2
 max_seq_length: 512
 batch_size: 32
-epochs: 10
+epochs: 5
