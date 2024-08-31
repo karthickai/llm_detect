@@ -1,17 +1,18 @@
 import sys
 import os
 import hydra
-from omegaconf import DictConfig
+from omegaconf import DictConfig, ListConfig
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 from llmdetect.datasets.prompt_injection import PromptInjectionDataset
 from llmdetect.utils.metrics import compute_metrics
 
-sys.path.append(os.path.abspath('../../../'))
-
 @hydra.main(config_path='../../../../config', config_name='config.yml')
 def train_model(cfg: DictConfig):
-    dataset = PromptInjectionDataset(cfg.dataset.name).load()
-
+    print("cfg.dataset.name", cfg.dataset.name)
+    if isinstance(cfg.dataset.name, ListConfig):
+        dataset = PromptInjectionDataset(cfg.dataset.name).load()
+    else:
+        dataset = PromptInjectionDataset([cfg.dataset.name]).load() 
     model = AutoModelForSequenceClassification.from_pretrained(
         cfg.model.model_name,
         num_labels=cfg.model.num_labels
@@ -19,6 +20,10 @@ def train_model(cfg: DictConfig):
 
     train_dataset = dataset['train'].remove_columns(["text"]).with_format("torch")
     test_dataset = dataset['test'].remove_columns(["text"]).with_format("torch")
+    print(f"Unique labels {test_dataset['label'].unique()}")
+    print(f"Total length of the train dataset: {len(train_dataset)}")
+    print(f"Total length of the test dataset: {len(test_dataset)}")
+    
 
     training_args = TrainingArguments(
         output_dir='./results',
@@ -42,6 +47,8 @@ def train_model(cfg: DictConfig):
     )
 
     trainer.train()
+    
+    trainer.save_model("combined_dataset_model")
 
 if __name__ == "__main__":
     train_model()
