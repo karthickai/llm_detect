@@ -10,9 +10,9 @@ from llmdetect.utils.metrics import compute_metrics
 def train_model(cfg: DictConfig):
     print("cfg.dataset.name", cfg.dataset.name)
     if isinstance(cfg.dataset.name, ListConfig):
-        dataset = PromptInjectionDataset(cfg.dataset.name).load()
+        dataset = PromptInjectionDataset(cfg.dataset).load()
     else:
-        dataset = PromptInjectionDataset([cfg.dataset.name]).load() 
+        dataset = PromptInjectionDataset([cfg.dataset]).load() 
     model = AutoModelForSequenceClassification.from_pretrained(
         cfg.model.model_name,
         num_labels=cfg.model.num_labels
@@ -23,7 +23,7 @@ def train_model(cfg: DictConfig):
     print(f"Unique labels {test_dataset['label'].unique()}")
     print(f"Total length of the train dataset: {len(train_dataset)}")
     print(f"Total length of the test dataset: {len(test_dataset)}")
-    
+    exit()
 
     training_args = TrainingArguments(
         output_dir='./results',

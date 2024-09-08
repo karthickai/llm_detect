@@ -1,16 +1,18 @@
 from datasets import load_dataset, concatenate_datasets
 from transformers import DistilBertTokenizer
-
+import os
 # Todo
 # Add method combine multiple prompt dataset
 # create Tranfer learning dataset load 15% of previous dataset in to training
 
 
 class PromptInjectionDataset:
-    def __init__(self, dataset_names, tokenizer_name='distilbert-base-uncased', data_dir="data"):
-        self.dataset_names = dataset_names
+    def __init__(self, dataset_cfg, tokenizer_name='distilbert-base-uncased', data_dir="data"):
+        self.dataset_names = dataset_cfg['name']
         self.tokenizer = DistilBertTokenizer.from_pretrained(tokenizer_name)
         self.data_dir = data_dir
+        self.data_cfg = dataset_cfg
+        print(dataset_cfg)
 
     def tokenize_data(self, examples):
         return self.tokenizer(examples['text'], padding="max_length", truncation=True, max_length=512)
@@ -26,7 +28,14 @@ class PromptInjectionDataset:
     def load(self):
         all_datasets = []
         for name in self.dataset_names:
-            dataset = load_dataset(name, cache_dir=self.data_dir)
+            if "local#" in name:
+                dataset = load_dataset("arrow", data_files={'train': self.data_cfg[name]['train'], 'test': self.data_cfg[name]['test']})
+            elif "JailbreakV-28K" in name:
+                dataset = load_dataset(name, 'JailBreakV_28K', cache_dir="data")
+                dataset = dataset['JailBreakV_28K'].map(lambda x: {'text': x['jailbreak_query'], 'label': 1})
+                dataset = dataset.train_test_split(test_size=0.1)
+            else:
+                dataset = load_dataset(name, cache_dir="data")
             dataset = dataset.filter(self.filter_labels)
             dataset = dataset.map(self.tokenize_data, batched=True)
             dataset = dataset.map(self.process_labels, batched=True)

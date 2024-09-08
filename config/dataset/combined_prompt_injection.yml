@@ -1,4 +1,4 @@
-name: ["local#synapsecai/synthetic-prompt-injections", "deepset/prompt-injections", "jayavibhav/prompt-injection-safety", "xTRam1/safe-guard-prompt-injection", "JailbreakV-28K/JailBreakV-28k"]
+name: ["JailbreakV-28K/JailBreakV-28k", "local#synapsecai/synthetic-prompt-injections", "deepset/prompt-injections", "jayavibhav/prompt-injection-safety", "xTRam1/safe-guard-prompt-injection"]
 local#synapsecai/synthetic-prompt-injections:
   train: data/synthetic/synthetic-prompt-injections-train.arrow
   test: data/synthetic/synthetic-prompt-injections-test.arrow
