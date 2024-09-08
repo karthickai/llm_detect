@@ -16,7 +16,7 @@ Prompt Injection Classification aims to identify and categorize text samples tha
 ```bash
 git clone https://github.com/karthickai/llm_detect.git
 cd llm_detect
-pip install -r requiremnts.txt
+pip install -r requirements.txt
 ```
 
 ### Run the model
@@ -30,5 +30,5 @@ python inference.py
 Make sure to edit the configurations in `config/` directory to suit your dataset and model parameters.
 
 ```bash
-python -m llmdetect.models.sequence_classification.train
+python -m llmdetect.models.sequence_classification.train hydra.run.dir=. hydra.output_subdir=null hydra/job_logging=disabled hydra/hydra_logging=disabled
 ```
