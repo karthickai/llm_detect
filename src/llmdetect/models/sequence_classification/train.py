@@ -18,12 +18,16 @@ def train_model(cfg: DictConfig):
         num_labels=cfg.model.num_labels
     )
 
-    train_dataset = dataset['train'].remove_columns(["text"]).with_format("torch")
-    test_dataset = dataset['test'].remove_columns(["text"]).with_format("torch")
+    train_dataset = dataset['train']
+    test_dataset = dataset['test']
+    columns_to_keep = ['input_ids', 'attention_mask', 'label', 'train', 'test']
+    columns_to_remove = [col for col in train_dataset.column_names if col not in columns_to_keep]
+    train_dataset = train_dataset.remove_columns(columns_to_remove)
+    test_dataset = test_dataset.remove_columns(columns_to_remove)
+
     print(f"Unique labels {test_dataset['label'].unique()}")
     print(f"Total length of the train dataset: {len(train_dataset)}")
     print(f"Total length of the test dataset: {len(test_dataset)}")
-    exit()
 
     training_args = TrainingArguments(
         output_dir='./results',

@@ -29,7 +29,7 @@ class PromptInjectionDataset:
         all_datasets = []
         for name in self.dataset_names:
             if "local#" in name:
-                dataset = load_dataset("arrow", data_files={'train': self.data_cfg[name]['train'], 'test': self.data_cfg[name]['test']})
+                dataset = load_dataset("arrow", data_files={'train': self.data_cfg[name]['train'], 'test': self.data_cfg[name]['test']}, cache_dir="data")
             elif "JailbreakV-28K" in name:
                 dataset = load_dataset(name, 'JailBreakV_28K', cache_dir="data")
                 dataset = dataset['JailBreakV_28K'].map(lambda x: {'text': x['jailbreak_query'], 'label': 1})
